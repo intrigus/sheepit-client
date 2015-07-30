@@ -117,7 +117,10 @@ public class Utils {
 			is.close();
 			return data;
 		}
-		catch (NoSuchAlgorithmException | IOException e) {
+		catch (NoSuchAlgorithmException e) {
+			return "";
+		}
+		catch (IOException e) {
 			return "";
 		}
 	}

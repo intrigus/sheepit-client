@@ -70,19 +70,14 @@ public class CPU {
 	
 	public void generateArch() {
 		String arch = System.getProperty("os.arch").toLowerCase();
-		switch (arch) {
-			case "i386":
-			case "i686":
-			case "x86":
-				this.arch = "32bit";
-				break;
-			case "amd64":
-			case "x86_64":
-				this.arch = "64bit";
-				break;
-			default:
-				this.arch = null;
-				break;
+		if ("i386".equals(arch) || "i686".equals(arch) || "x86".equals(arch)) {
+			this.arch = "32bit";
+		}
+		else if ("amd64".equals(arch) || "amd64".equals(arch)) {
+			this.arch = "64bit";
+		}
+		else {
+			this.arch = null;
 		}
 	}
 	

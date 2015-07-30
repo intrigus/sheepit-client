@@ -211,51 +211,49 @@ public class Job {
 		new_env.put("BLENDER_USER_CONFIG", config.workingDirectory.getAbsolutePath().replace("\\", "\\\\"));
 		
 		for (String arg : command1) {
-			switch (arg) {
-				case ".c":
-					command.add(getScenePath());
-					command.add("-P");
+			if (arg.equals(".c")) {
+				command.add(getScenePath());
+				command.add("-P");
+				
+				try {
+					script_file = File.createTempFile("script_", "", config.workingDirectory);
+					File file = new File(script_file.getAbsolutePath());
+					FileWriter txt;
+					txt = new FileWriter(file);
 					
-					try {
-						script_file = File.createTempFile("script_", "", config.workingDirectory);
-						File file = new File(script_file.getAbsolutePath());
-						FileWriter txt;
-						txt = new FileWriter(file);
-						
-						PrintWriter out = new PrintWriter(txt);
-						out.write(getScript());
-						out.write("\n");
-						out.write(core_script); // GPU part
-						out.write("\n"); // GPU part
-						out.close();
-						
-						command.add(script_file.getAbsolutePath());
-					}
-					catch (IOException e) {
-						StringWriter sw = new StringWriter();
-						e.printStackTrace(new PrintWriter(sw));
-						log.error("Client:runRenderer exception on script generation, will return UNKNOWN " + e + " stacktrace " + sw.toString());
-						return Error.Type.UNKNOWN;
-					}
-					script_file.deleteOnExit();
-					break;
-				case ".e":
-					command.add(getRendererPath());
-					// the number of cores has to be put after the binary and before the scene arg
-					if (config.getNbCores() > 0) {
-						command.add("-t");
-						command.add(Integer.toString(config.getNbCores()));
-					}
-					break;
-				case ".o":
-					command.add(config.workingDirectory.getAbsolutePath() + File.separator + getPrefixOutputImage());
-					break;
-				case ".f":
-					command.add(getFrameNumber());
-					break;
-				default:
-					command.add(arg);
-					break;
+					PrintWriter out = new PrintWriter(txt);
+					out.write(getScript());
+					out.write("\n");
+					out.write(core_script); // GPU part
+					out.write("\n"); // GPU part
+					out.close();
+					
+					command.add(script_file.getAbsolutePath());
+				}
+				catch (IOException e) {
+					StringWriter sw = new StringWriter();
+					e.printStackTrace(new PrintWriter(sw));
+					log.error("Client:runRenderer exception on script generation, will return UNKNOWN " + e + " stacktrace " + sw.toString());
+					return Error.Type.UNKNOWN;
+				}
+				script_file.deleteOnExit();
+			}
+			else if (arg.equals(".e")) {
+				command.add(getRendererPath());
+				// the number of cores has to be put after the binary and before the scene arg
+				if (config.getNbCores() > 0) {
+					command.add("-t");
+					command.add(Integer.toString(config.getNbCores()));
+				}
+			}
+			else if (arg.equals(".o")) {
+				command.add(config.workingDirectory.getAbsolutePath() + File.separator + getPrefixOutputImage());
+			}
+			else if (arg.equals(".f")) {
+				command.add(getFrameNumber());
+			}
+			else {
+				command.add(arg);
 			}
 		}
 		

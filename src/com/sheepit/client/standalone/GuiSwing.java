@@ -62,7 +62,16 @@ public class GuiSwing extends JFrame implements Gui {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}
-		catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
+		catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		catch (InstantiationException e1) {
+			e1.printStackTrace();
+		}
+		catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		}
+		catch (UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 		}
 		

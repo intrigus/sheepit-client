@@ -256,31 +256,28 @@ public class Worker {
 		
 		Log.getInstance(config).debug("client version " + config.getJarVersion());
 		
-		Gui gui;
+		Gui gui = null;
 		String type = config.getUIType();
 		if (type == null) {
 			type = "swing";
 		}
-		switch (type) {
-			case GuiTextOneLine.type:
-				if (config.getPrintLog()) {
-					System.out.println("OneLine UI can not be used if verbose mode is enabled");
-					System.exit(2);
-				}
-				gui = new GuiTextOneLine();
-				break;
-			case GuiText.type:
-				gui = new GuiText();
-				break;
-			default:
-			case GuiSwing.type:
-				if (java.awt.GraphicsEnvironment.isHeadless()) {
-					System.out.println("Graphical ui can not be launch.");
-					System.out.println("You should set a DISPLAY or use a text ui (with -ui " + GuiTextOneLine.type + " or -ui " + GuiText.type + ").");
-					System.exit(3);
-				}
-				gui = new GuiSwing();
-				break;
+		if (type == GuiTextOneLine.type) {
+			if (config.getPrintLog()) {
+				System.out.println("OneLine UI can not be used if verbose mode is enabled");
+				System.exit(2);
+			}
+			gui = new GuiTextOneLine();
+		}
+		else if (type == GuiText.type) {
+		    gui = new GuiText();
+		}
+		else if (type == GuiSwing.type) {
+			if (java.awt.GraphicsEnvironment.isHeadless()) {
+				System.out.println("Graphical ui can not be launch.");
+				System.out.println("You should set a DISPLAY or use a text ui (with -ui " + GuiTextOneLine.type + " or -ui " + GuiText.type + ").");
+				System.exit(3);
+			}
+			gui = new GuiSwing();
 		}
 		Client cli = new Client(gui, config, server);
 		gui.setClient(cli);
