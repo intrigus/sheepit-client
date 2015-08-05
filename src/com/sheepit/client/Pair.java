@@ -16,8 +16,6 @@
 
 package com.sheepit.client;
 
-import java.util.Objects;
-
 /**
 * Container to ease passing around a pair of two objects. This object provides a sensible
 * implementation of equals(), returning true if equals() is true on each of the contained
@@ -52,7 +50,7 @@ public class Pair<F, S> {
 			return false;
 		}
 		Pair<?, ?> p = (Pair<?, ?>) o;
-		return Objects.equals(p.first, first) && Objects.equals(p.second, second);
+		return p.first.equals(first) && p.second.equals(second);
 	}
 	
 	/**
