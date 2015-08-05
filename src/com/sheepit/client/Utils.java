@@ -21,11 +21,11 @@ package com.sheepit.client;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.math.BigInteger;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -105,24 +105,54 @@ public class Utils {
 	}
 	
 	public static String md5(String path_of_file_) {
+		MessageDigest digest;
 		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			InputStream is = Files.newInputStream(Paths.get(path_of_file_));
-			DigestInputStream dis = new DigestInputStream(is, md);
-			byte[] buffer = new byte[8192];
-			while (dis.read(buffer) > 0)
-				; // process the entire file
-			String data = DatatypeConverter.printHexBinary(md.digest()).toLowerCase();
-			dis.close();
-			is.close();
-			return data;
+			digest = MessageDigest.getInstance("MD5");
 		}
-		catch (NoSuchAlgorithmException e) {
+		catch (NoSuchAlgorithmException e1) {
+			e1.printStackTrace();
 			return "";
+		}
+		File f = new File(path_of_file_);
+		InputStream is;
+		try {
+			is = new FileInputStream(f);
+		}
+		catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+			return "";
+		}
+		byte[] buffer = new byte[8192];
+		int read = 0;
+		try {
+			while ((read = is.read(buffer)) > 0) {
+				digest.update(buffer, 0, read);
+			}
+			byte[] md5sum = digest.digest();
+			BigInteger bigInt = new BigInteger(1, md5sum);
+			
+			String output = bigInt.toString(16);
+			
+			// fill with "0" because bigInt.toString does not add 0 at the beginning of the result
+			int zero_to_add = 32 - output.length();
+			for (int i = 0; i < zero_to_add; i++)
+				output = "0" + output;
+			
+			return output;
 		}
 		catch (IOException e) {
-			return "";
+			e.printStackTrace();
 		}
+		finally {
+			try {
+				is.close();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+				//throw new RuntimeException("Unable to close input stream for MD5 calculation", e);
+			}
+		}
+		return "";
 	}
 	
 	public static double lastModificationTime(File directory_) {
