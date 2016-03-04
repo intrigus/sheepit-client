@@ -261,17 +261,17 @@ public class Worker {
 		if (type == null) {
 			type = "swing";
 		}
-		if (type == GuiTextOneLine.type) {
+		if (type.equals(GuiTextOneLine.type)) {
 			if (config.getPrintLog()) {
 				System.out.println("OneLine UI can not be used if verbose mode is enabled");
 				System.exit(2);
 			}
 			gui = new GuiTextOneLine();
 		}
-		else if (type == GuiText.type) {
+		else if (type.equals(GuiText.type)) {
 		    gui = new GuiText();
 		}
-		else if (type == GuiSwing.type) {
+		else if (type.equals(GuiSwing.type)) {
 			if (java.awt.GraphicsEnvironment.isHeadless()) {
 				System.out.println("Graphical ui can not be launch.");
 				System.out.println("You should set a DISPLAY or use a text ui (with -ui " + GuiTextOneLine.type + " or -ui " + GuiText.type + ").");
