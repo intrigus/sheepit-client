@@ -73,7 +73,7 @@ public class CPU {
 		if ("i386".equals(arch) || "i686".equals(arch) || "x86".equals(arch)) {
 			this.arch = "32bit";
 		}
-		else if ("amd64".equals(arch) || "amd64".equals(arch)) {
+		else if ("amd64".equals(arch) || "x86_64".equals(arch)) {
 			this.arch = "64bit";
 		}
 		else {
