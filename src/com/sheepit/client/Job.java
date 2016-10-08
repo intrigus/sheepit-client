@@ -55,6 +55,7 @@ public class Job {
 	private String rendererCommand;
 	private String script;
 	private boolean useGPU;
+	private String password;
 	private String extras;
 	private String updateRenderingStatusMethod;
 	private boolean synchronousUpload;
@@ -64,7 +65,7 @@ public class Job {
 	private Configuration config;
 	private Log log;
 	
-	public Job(Configuration config_, Gui gui_, Log log_, String id_, String frame_, String revision_, String path_, boolean use_gpu, String command_, String script_, String sceneMd5_, String rendererMd5_, String extras_, boolean synchronous_upload_, String update_method_) {
+	public Job(Configuration config_, Gui gui_, Log log_, String id_, String frame_, String revision_, String path_, boolean use_gpu, String command_, String script_, String sceneMd5_, String rendererMd5_, String password_, String extras_, boolean synchronous_upload_, String update_method_) {
 		config = config_;
 		id = id_;
 		numFrame = frame_;
@@ -74,6 +75,7 @@ public class Job {
 		rendererCommand = command_;
 		sceneMD5 = sceneMd5_;
 		rendererMD5 = rendererMd5_;
+		password = password_;
 		extras = extras_;
 		synchronousUpload = synchronous_upload_;
 		gui = gui_;
@@ -179,6 +181,10 @@ public class Job {
 	
 	public String getSceneArchivePath() {
 		return config.workingDirectory.getAbsolutePath() + File.separator + sceneMD5 + ".zip";
+	}
+	
+	public String getSceneArchivePassword() {
+		return password;
 	}
 	
 	public boolean simultaneousUploadIsAllowed() {

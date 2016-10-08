@@ -415,6 +415,7 @@ public class Server extends Thread implements HostnameVerifier, X509TrustManager
 						script,
 						job_node.getAttribute("archive_md5"),
 						renderer_node.getAttribute("md5"),
+						job_node.getAttribute("password"),
 						frame_extras,
 						synchronous_upload,
 						update_method
